@@ -120,9 +120,11 @@ class OCI8Statement implements \IteratorAggregate, Statement
             $lob->writeTemporary($variable, OCI_TEMP_BLOB);
 
             return oci_bind_by_name($this->_sth, $column, $lob, -1, OCI_B_BLOB);
-        } else {
+        } elseif (null !== $length) {
             return oci_bind_by_name($this->_sth, $column, $variable, $length);
         }
+
+        return oci_bind_by_name($this->_sth, $column, $variable);
     }
 
     /**
